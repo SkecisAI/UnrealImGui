@@ -29,7 +29,11 @@ void FImGuiDrawList::CopyVertexData(TArray<FSlateVertex>& OutVertexBuffer, const
 		SlateVertex.Position[1] = VertexPosition.Y;
 		SlateVertex.ClipRect = VertexClippingRect;
 #else
+	#if ENGINE_MAJOR_VERSION >= 5
+		SlateVertex.Position = Transform.TransformPoint(ImGuiInterops::ToVector2f(ImGuiVertex.pos));
+	#else
 		SlateVertex.Position = Transform.TransformPoint(ImGuiInterops::ToVector2D(ImGuiVertex.pos));
+	#endif
 #endif // ENGINE_COMPATIBILITY_LEGACY_CLIPPING_API
 
 		// Unpack ImU32 color.
